@@ -1,40 +1,40 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Btn,
   Description,
   DescriptionSpan,
+  Footer,
   Item,
   ProductImg,
-  ProductImgDiv,
   Quantity,
   QuantityInput,
-  Remove,
   ShoppingCart,
 } from "../styled/CartStyled";
+import { CartContext } from "../App";
+import { TotalPrice } from "../styled/CartStyled";
 
 const Cart = () => {
+  const { formatNumber, allAmount, setAllAmount, cartTotal, setCartTotal } = useContext(CartContext);
   const cart = JSON.parse(localStorage.getItem("cart"));
   const [cartItem, setCartItem] = useState([]);
-  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     const result = JSON.parse(localStorage.getItem("cart"));
     setCartItem(result);
     amount();
-  }, [quantity]);
+  }, [allAmount]);
 
   const amount = () => {
     let sum = 0;
+    let total = 0;
     const cartUpdate = JSON.parse(localStorage.getItem("cart"));
-    if (cartUpdate.length !== 0) {
-      for (let productAmount of cartUpdate) {
-        sum += productAmount.quantity;
-        setQuantity(sum);
+      for (let product of cartUpdate) {
+        sum += product.quantity;
+        setAllAmount(sum);
+        total += product.quantity*product.price
+        setCartTotal(total)
       }
-    } else {
-      setQuantity(0);
-    }
   };
 
   const removeItem = (productId) => {
@@ -57,40 +57,50 @@ const Cart = () => {
     for (let productDe of cart) {
       if (productDe.id === productId) {
         productDe.quantity--;
+        if (productDe.quantity < 1) {
+          // console.log("remove item : ", { productId });
+          removeItem(productId);
+          return;
+        } else {
+          localStorage.setItem("cart", JSON.stringify(cart));
+          amount();
+        }
       }
     }
-    localStorage.setItem("cart", JSON.stringify(cart));
-    amount();
   };
 
   return (
     <ShoppingCart>
-      <div>amount : {quantity}</div>
       {cartItem.map((item, index) => {
         return (
           <Item key={index}>
-              <Link to={`/product/${item.id}`}>
-                <ProductImgDiv>
-                  <ProductImg
-                    src={item.thumbnail}
-                    width={300}
-                    height={300}
-                    alt={item.title}
-                  />
-                </ProductImgDiv>
-              </Link>
-                <Description>
-                  <DescriptionSpan>{item.title}</DescriptionSpan>
-                </Description>
+            <Link to={`/product/${item.id}`}>
+              <ProductImg
+                src={item.thumbnail}
+                width={300}
+                height={300}
+                alt={item.title}
+              />
+            </Link>
+            <Description>
+              <DescriptionSpan>{item.title}</DescriptionSpan>
+              <span>price : {formatNumber(item.price)}</span>
+            </Description>
             <Quantity>
               <Btn onClick={() => increaseItem(item.id)}>+</Btn>
               <QuantityInput>{item.quantity}</QuantityInput>
               <Btn onClick={() => decreaseItem(item.id)}>-</Btn>
             </Quantity>
-            <Remove onClick={() => removeItem(item.id)}>remove</Remove>
+            <TotalPrice>
+              {formatNumber(item.quantity*item.price)}
+            </TotalPrice>
+            <Quantity>
+              <Btn onClick={() => removeItem(item.id)}>x</Btn>
+            </Quantity>
           </Item>
         );
       })}
+      <Footer>Total : {formatNumber(cartTotal)}</Footer>
     </ShoppingCart>
   );
 };

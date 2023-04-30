@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Layout, PdContainer, PdDetails } from "../styled/CartStyled";
+import { CartContext } from "../App";
 
 export const Product = (props) => {
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -8,6 +9,7 @@ export const Product = (props) => {
   const { one } = useParams();
   const [resultProduct, setResultProduct] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const { setAllAmount } = useContext(CartContext);
 
   const api = async () => {
     try {
@@ -27,22 +29,23 @@ export const Product = (props) => {
 
   //Function เพิ่ม, ลด สินค้า
   const addItem = (productId) => {
-    if (cart.length === 0) {
+    let sum = 0;
+    let res = cart.find((Element) => Element.id === productId);
+    if (res === undefined) {
       resultProduct.quantity = 1;
       cart.push(resultProduct);
     } else {
-      let res = cart.find((Element) => Element.id === productId);
-      if (res === undefined) {
-        resultProduct.quantity = 1;
-        cart.push(resultProduct);
-      } else {
-        for (let productIc of cart) {
-          if (productIc.id === productId) {
-            productIc.quantity++;
-          }
+      for (let productIc of cart) {
+        if (productIc.id === productId) {
+          productIc.quantity++;
         }
       }
     }
+    for (let product of cart) {
+      sum += product.quantity;
+      setAllAmount(sum);
+    }
+
     localStorage.setItem("cart", JSON.stringify(cart));
 
     // console.log("Item Added : ",productId);
@@ -61,8 +64,8 @@ export const Product = (props) => {
               alt={resultProduct.title}
             />
             <PdDetails>
-            <h3>price : {resultProduct.price} $</h3>
-            <h3>rating : {resultProduct.rating} / 5</h3>
+              <h3>price : {resultProduct.price} $</h3>
+              <h3>rating : {resultProduct.rating} / 5</h3>
             </PdDetails>
             <h3>Description : </h3>
             <h3>{resultProduct.description}</h3>

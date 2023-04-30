@@ -56,17 +56,23 @@ export const Header = styled.div`
 `;
 
 export const Button = styled.div`
+  height: 38px;
+  padding: 5px;
   border: none;
   font: inherit;
   background: #4d1601;
   color: #fff;
-  padding: 0.75rem 3rem;
   display: flex;
   justify-content: space-around;
   border-radius: 25px;
   align-items: center;
   font-weight: bold;
+  margin-left: 0.75rem;
 `;
+
+export const NavShopBtn = styled.div`
+  display:flex;
+`
 
 export const Badge = styled.div`
   background-color: #b94517;
@@ -77,14 +83,15 @@ export const Badge = styled.div`
 `;
 
 export const ShoppingCart = styled.div`
-  width: 750px;
-  height: 420px;
+  width: fit-content;
+  height: auto;
   background: #fff;
   margin: 120px auto;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 25px;
 `;
 
 export const Item = styled.div`
@@ -121,16 +128,12 @@ export const ProductImg = styled.img`
   height: 80px;
 `;
 
-//   .item:nth-child(3) {
-//     border-top: 1px solid #e1e8ee;
-//     border-bottom: 1px solid #e1e8ee;
-//   }
-
 export const Description = styled.div`
   align-items: center;
-  padding-top: 5px;
+  /* padding-top: 5px; */
+  padding-left: 10px;
   margin-right: 60px;
-  min-width: 120px;
+  width: 120px;
 `;
 
 export const DescriptionSpan = styled.span`
@@ -140,12 +143,6 @@ export const DescriptionSpan = styled.span`
   color: #000;
   font-weight: 700;
 `;
-
-//   .description span:last-child {
-//     font-weight: 300;
-//     margin-top: 8px;
-//     color: #86939e;
-//   }
 
 export const Quantity = styled.div`
   padding-top: 20px;
@@ -169,14 +166,6 @@ export const Btn = styled.button`
   cursor: pointer;
 `;
 
-//   .plus-btn img {
-//     margin-top: 3px;
-//   }
-
-//   .minus-btn img {
-//     margin-bottom: 3px;
-//   }
-
 export const TotalPrice = styled.div`
   width: 83px;
   padding-top: 15px;
@@ -190,16 +179,3 @@ export const Remove = styled.button`
   padding-top: 25px;
   margin-left: 60px;
 `;
-
-//   .remove img {
-//     cursor: pointer;
-//   }
-
-//   .empty {
-//     height: 60px;
-//     border-bottom: 1px solid #e1e8ee;
-//     text-align: center;
-//     font-size: 25px;
-//     font-weight: 800;
-//     color: red;
-//   }
