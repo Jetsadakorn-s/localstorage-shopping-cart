@@ -1,34 +1,46 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Btn,
+  Description,
+  DescriptionSpan,
+  Item,
+  ProductImg,
+  ProductImgDiv,
+  Quantity,
+  QuantityInput,
+  Remove,
+  ShoppingCart,
+} from "../styled/CartStyled";
 
 const Cart = () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
   const [cartItem, setCartItem] = useState([]);
-  const [quantity,setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     const result = JSON.parse(localStorage.getItem("cart"));
     setCartItem(result);
-    amount()
+    amount();
   }, [quantity]);
 
   const amount = () => {
-    let sum = 0
-    const cartUpdate = JSON.parse(localStorage.getItem("cart"))
-    if(cartUpdate.length !== 0){
-    for (let productAmount of cartUpdate) {
-        sum += productAmount.quantity
-        setQuantity(sum)
+    let sum = 0;
+    const cartUpdate = JSON.parse(localStorage.getItem("cart"));
+    if (cartUpdate.length !== 0) {
+      for (let productAmount of cartUpdate) {
+        sum += productAmount.quantity;
+        setQuantity(sum);
       }
-    }else{
-        setQuantity(0)
+    } else {
+      setQuantity(0);
     }
-  }
+  };
 
   const removeItem = (productId) => {
     let temp = cartItem.filter((Element) => Element.id !== productId);
     localStorage.setItem("cart", JSON.stringify(temp));
-    amount()
+    amount();
   };
 
   const increaseItem = (productId) => {
@@ -38,7 +50,7 @@ const Cart = () => {
       }
     }
     localStorage.setItem("cart", JSON.stringify(cart));
-    amount()
+    amount();
   };
 
   const decreaseItem = (productId) => {
@@ -48,36 +60,38 @@ const Cart = () => {
       }
     }
     localStorage.setItem("cart", JSON.stringify(cart));
-    amount()
+    amount();
   };
 
   return (
-    <div>
-        <div>amount : {quantity}</div>
+    <ShoppingCart>
+      <div>amount : {quantity}</div>
       {cartItem.map((item, index) => {
         return (
-          <div key={index}>
-            <div className="product">
+          <Item key={index}>
               <Link to={`/product/${item.id}`}>
-                <div className="title">{item.title}</div>
-                <img
-                  src={item.thumbnail}
-                  width={300}
-                  height={300}
-                  alt={item.title}
-                />
+                <ProductImgDiv>
+                  <ProductImg
+                    src={item.thumbnail}
+                    width={300}
+                    height={300}
+                    alt={item.title}
+                  />
+                </ProductImgDiv>
               </Link>
-            </div>
-            <div className="btn-container">
-              <button onClick={() => increaseItem(item.id)}>+</button>
-                <div>{item.quantity}</div>
-              <button onClick={() => decreaseItem(item.id)}>-</button>
-              <button onClick={() => removeItem(item.id)}>remove</button>
-            </div>
-          </div>
+                <Description>
+                  <DescriptionSpan>{item.title}</DescriptionSpan>
+                </Description>
+            <Quantity>
+              <Btn onClick={() => increaseItem(item.id)}>+</Btn>
+              <QuantityInput>{item.quantity}</QuantityInput>
+              <Btn onClick={() => decreaseItem(item.id)}>-</Btn>
+            </Quantity>
+            <Remove onClick={() => removeItem(item.id)}>remove</Remove>
+          </Item>
         );
       })}
-    </div>
+    </ShoppingCart>
   );
 };
 export default Cart;

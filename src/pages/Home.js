@@ -1,8 +1,10 @@
+import { HomePage, Layout } from "../styled/CartStyled";
+
 const Home = () => {
   return (
-    <div>
-        <h1>Jetsadakorn Shop</h1>
-    </div>
+    <Layout>
+      <HomePage>Jetsadakorn Shop</HomePage>
+    </Layout>
   );
 };
 export default Home;

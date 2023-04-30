@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Layout, PdContainer, PdDetails } from "../styled/CartStyled";
 
 export const Product = (props) => {
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -49,8 +50,8 @@ export const Product = (props) => {
 
   return (
     isLoading && (
-      <div>
-        <div>
+      <Layout>
+        <PdContainer>
           <div>
             <h1>{resultProduct.title}</h1>
             <img
@@ -59,14 +60,20 @@ export const Product = (props) => {
               height={300}
               alt={resultProduct.title}
             />
+            <PdDetails>
             <h3>price : {resultProduct.price} $</h3>
             <h3>rating : {resultProduct.rating} / 5</h3>
+            </PdDetails>
+            <h3>Description : </h3>
+            <h3>{resultProduct.description}</h3>
           </div>
-        </div>
-        <div>
-          <button onClick={() => addItem(resultProduct.id)}>Add to cart</button>
-        </div>
-      </div>
+          <div>
+            <button onClick={() => addItem(resultProduct.id)}>
+              Add to cart
+            </button>
+          </div>
+        </PdContainer>
+      </Layout>
     )
   );
 };
