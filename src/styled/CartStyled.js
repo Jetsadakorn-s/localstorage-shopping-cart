@@ -12,6 +12,7 @@ export const PdContainer = styled.div`
 
 export const PdDetails = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `;
 
@@ -179,3 +180,8 @@ export const Remove = styled.button`
   padding-top: 25px;
   margin-left: 60px;
 `;
+
+export const AddBtn = styled.div`
+  justify-content: center;
+
+`

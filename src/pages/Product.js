@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Layout, PdContainer, PdDetails } from "../styled/CartStyled";
+import {
+  AddBtn,
+  Layout,
+  PdContainer,
+  PdDetails,
+} from "../styled/CartStyled";
 import { CartContext } from "../App";
 
 export const Product = (props) => {
@@ -24,6 +29,7 @@ export const Product = (props) => {
 
   useEffect(() => {
     api();
+     // eslint-disable-next-line
   }, []);
   //   console.log(resultProduct.title);
 
@@ -56,24 +62,24 @@ export const Product = (props) => {
       <Layout>
         <PdContainer>
           <div>
-            <h1>{resultProduct.title}</h1>
-            <img
-              src={resultProduct.thumbnail}
-              width={300}
-              height={300}
-              alt={resultProduct.title}
-            />
             <PdDetails>
+              <h1>{resultProduct.title}</h1>
+              <img
+                src={resultProduct.thumbnail}
+                width={300}
+                height={300}
+                alt={resultProduct.title}
+              />
               <h3>price : {resultProduct.price} $</h3>
               <h3>rating : {resultProduct.rating} / 5</h3>
             </PdDetails>
             <h3>Description : </h3>
             <h3>{resultProduct.description}</h3>
-          </div>
-          <div>
-            <button onClick={() => addItem(resultProduct.id)}>
-              Add to cart
-            </button>
+            <AddBtn>
+              <button onClick={() => addItem(resultProduct.id)}>
+                Add to cart
+              </button>
+            </AddBtn>
           </div>
         </PdContainer>
       </Layout>
